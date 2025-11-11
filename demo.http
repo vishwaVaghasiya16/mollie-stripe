@@ -1,0 +1,79 @@
+### Payment Module Demo - HTTP Requests
+
+### Health Check
+GET http://localhost:3000/health
+
+### Create Stripe Payment Intent
+POST http://localhost:3000/api/payment/create
+Content-Type: application/json
+
+{
+  "gateway": "stripe",
+  "amount": 100.00,
+  "currency": "USD",
+  "description": "Demo payment via Stripe",
+  "successUrl": "http://localhost:3000/payment/success",
+  "cancelUrl": "http://localhost:3000/payment/cancel",
+  "orderReference": "ORDER-12345",
+  "customerId": "customer@example.com",
+  "metadata": {
+    "orderId": "12345",
+    "customerEmail": "customer@example.com"
+  }
+}
+
+### Create Mollie Payment Intent
+POST http://localhost:3000/api/payment/create
+Content-Type: application/json
+
+{
+  "gateway": "mollie",
+  "amount": 50.00,
+  "currency": "EUR",
+  "description": "Demo payment via Mollie",
+  "returnUrl": "http://localhost:3000/payment/success",
+  "orderReference": "ORDER-67890",
+  "customerId": "customer@example.com",
+  "metadata": {
+    "orderId": "67890",
+    "customerEmail": "customer@example.com"
+  }
+}
+
+### Get All Payments
+GET http://localhost:3000/api/payment/all
+
+### Get Payments by Gateway (Stripe)
+GET http://localhost:3000/api/payment/all?gateway=stripe
+
+### Get Payments by Gateway (Mollie)
+GET http://localhost:3000/api/payment/all?gateway=mollie
+
+### Get Payment by ID (Replace PAYMENT_ID with actual ID)
+GET http://localhost:3000/api/payment/PAYMENT_ID
+
+### Get Payment Status (Replace PAYMENT_ID with actual ID)
+GET http://localhost:3000/api/payment/PAYMENT_ID/status?gateway=stripe
+
+### Verify Payment - Frontend Callback (Replace PAYMENT_ID with actual ID)
+GET http://localhost:3000/api/payment/PAYMENT_ID/verify?gateway=stripe
+
+### Process Refund (Replace PAYMENT_ID with actual ID)
+POST http://localhost:3000/api/payment/PAYMENT_ID/refund
+Content-Type: application/json
+
+{
+  "gateway": "stripe",
+  "amount": 25.00,
+  "reason": "requested_by_customer"
+}
+
+### Process Full Refund (Replace PAYMENT_ID with actual ID)
+POST http://localhost:3000/api/payment/PAYMENT_ID/refund
+Content-Type: application/json
+
+{
+  "gateway": "stripe",
+  "reason": "requested_by_customer"
+}
+
